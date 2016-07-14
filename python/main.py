@@ -184,11 +184,11 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
         else:
             best_score = min(scores)
         best_moves.insert(0, moves[scores.index(best_score)])
-        self.response.write(g.Next())
-        self.response.write(scores)
-        self.response.write(best_score)
-        self.response.write(best_moves)
-        self.response.write("""<br>""")
+        #self.response.write(g.Next())
+        #self.response.write(scores)
+        #self.response.write(best_score)
+        #self.response.write(best_moves)
+        #self.response.write("""<br>""")
         return best_score, best_moves
 
     def count_score(self, player, new_g):
