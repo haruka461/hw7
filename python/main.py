@@ -163,8 +163,42 @@ Paste JSON here:<p/><textarea name=json cols=80 rows=24></textarea>
                 # TO STEP STUDENTS:
                 # You'll probably want to change how this works, to do something
                 # more clever than just picking a random move.
-	    	move = random.choice(valid_moves)
-    		self.response.write(PrettyMove(move))
+	    	#move = random.choice(valid_moves)
+                player = g.Next()
+                (score, moves) = self.minimax(g, player, 3)
+    		self.response.write(PrettyMove(moves[0]))
+
+    def minimax(self, g, player, depth):
+        if depth == 0:
+            return self.count_score(player, g), []
+        scores = []
+        moves = g.ValidMoves()
+        if moves == []:
+            return self.count_score(player, g), []
+        for move in moves:
+            new_game = g.NextBoardPosition(move)
+            (score, best_moves) = self.minimax(new_game, player, depth - 1)
+            scores.append(score)
+        if g.Next() == player:
+            best_score = max(scores)
+        else:
+            best_score = min(scores)
+        best_moves.insert(0, moves[scores.index(best_score)])
+        self.response.write(g.Next())
+        self.response.write(scores)
+        self.response.write(best_score)
+        self.response.write(best_moves)
+        self.response.write("""<br>""")
+        return best_score, best_moves
+
+    def count_score(self, player, new_g):
+        score = 0
+        for x in range(0, 8):
+            for y in range(0, 8):
+                if new_g.Pos(x + 1, y + 1) == player:
+                    score += 1
+        return score
+                    
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
